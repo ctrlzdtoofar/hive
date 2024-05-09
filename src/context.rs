@@ -56,21 +56,21 @@ mod tests {
     #[test]
     fn can_manage_data() {
         let mut mem = HiveMemory::default();
-
         let app_state = AppState::default();
         let db_pool = DbPool::default();
 
         mem.insert(app_state.clone());
         mem.insert(db_pool.clone());
 
-        let from_context = mem.get::<AppState>()
-            .expect("Failed to get app state type as expected");
+        let hm_app_state = mem.get::<AppState>().expect("Failed to get app state as expected");
+        let hm_db_pool = mem.get::<DbPool>().expect("Failed to get db pool as expected");
+        let hm_app_state_2 = mem.get::<AppState>().expect("Failed to get app state as expected");
 
-        assert_eq!(from_context.api_key,
+        assert_eq!(hm_app_state_2.api_key,
                    app_state.api_key,
                    "Api key should have matched, expected {}, actual {}",
                    app_state.api_key,
-                   from_context.api_key);
+                   hm_app_state_2.api_key);
 
         let from_context = mem.get::<DbPool>()
             .expect("Failed to get db pool type as expected");
